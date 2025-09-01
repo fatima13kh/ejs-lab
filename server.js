@@ -54,11 +54,24 @@ const RESTAURANT = {
 }
 
 
-// middleware 
+// Middleware 
 app.use(morgan('dev'))
 
 
 // Routes
+app.get('/menu/:category', (req, res) => {
+  const category = req.params.category.toLowerCase();
+
+  // Filter menu items based on the category
+  const menuItems = RESTAURANT.menu.filter(item => item.category === category);
+
+  // Capitalize first letter for title/header
+  const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+
+  res.render('category.ejs', { menuItems, category: capitalizedCategory });
+});
+
+
 app.get('/menu', (req, res) => {
   res.render('menu.ejs', { menu: RESTAURANT.menu });
 });
